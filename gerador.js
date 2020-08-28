@@ -71,7 +71,25 @@ function preencherCodigoGerado(){
     let nomeBancoMongo = 'tdc2020';
 
     // gerar texto do docker-compose.yml
+    var optFramework = frameworkSelecionado.options[frameworkSelecionado.selectedIndex];
     let nomeRedeBackend = 'backend';
+
+    let configElastic = '';
+    if(elastic762){
+    }
+
+    let configKibana = '';
+    if(kibana762){
+    }
+
+    let configMongo = '';
+    if(mongo44){
+    }
+
+    let configMongoExpress = '';
+    if(mongoExpress){
+    }
+
     let configSpringBoot = `    
 demo-service:
   image: sample-container
@@ -92,20 +110,8 @@ demo-service:
     - elasticsearch
     - kibana`;
 
-    let configElastic = '';
-    if(elastic762){
-    }
-
-    let configKibana = '';
-    if(kibana762){
-    }
-
-    let configMongo = '';
-    if(mongo44){
-    }
-
-    let configMongoExpress = '';
-    if(mongoExpress){
+    if(optFramework.value == 0){
+        configSpringBoot = '';
     }
 
     var optDockerComposeVersao = dockerComposeVersao.options[dockerComposeVersao.selectedIndex].value;
@@ -124,8 +130,6 @@ networks:
 
     // =======================================================
     // gerar texto do Dockerfile para spring boot
-    var optFramework = frameworkSelecionado.options[frameworkSelecionado.selectedIndex];
-
     let jdkSelecionada = '';
     if(optFramework.value == 1){
         jdkSelecionada = 'adoptopenjdk/openjdk11:alpine-jre';
@@ -138,6 +142,10 @@ networks:
     let textoDockerFileBackend = `FROM ${jdkSelecionada}
 ADD build/libs/sample-0.0.1-SNAPSHOT.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]`;
+
+    if(optFramework.value == 0){
+        textoDockerFileBackend = '';
+    }
 
     editor2.setValue(textoDockerFileBackend);
 
