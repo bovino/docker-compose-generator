@@ -85,6 +85,22 @@ function preencherCodigoGerado(){
 
     let configElastic = '';
     if(elastic762){
+        configElastic = 'elasticsearch:\n' +
+            '    hostname: elasticsearch\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend + '\n' +
+            '    container_name: elasticsearch\n' +
+            '    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2\n' +
+            '    environment:\n' +
+            '      - discovery.type=single-node\n' +
+            '    ports:\n' +
+            '      - 9200:9200\n' +
+            '      - 9300:9300\n' +
+            '    healthcheck:\n' +
+            '      test: [\'CMD\', \'curl\', \'-f\', \'http://localhost:9200\']\n' +
+            '      interval: 20s\n' +
+            '      timeout: 5s\n' +
+            '      retries: 10';
         dependsElastic = '- elasticsearch';
         subConfigElastic = '- SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200\n' +
             '      - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster\n' +
@@ -93,6 +109,21 @@ function preencherCodigoGerado(){
 
     let configKibana = '';
     if(kibana762){
+        configKibana = 'kibana:\n' +
+            '    hostname: kibana\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend + '\n' +
+            '    container_name: kibana\n' +
+            '    image: docker.elastic.co/kibana/kibana:7.6.2\n' +
+            '    ports:\n' +
+            '      - 5601:5601\n' +
+            '    healthcheck:\n' +
+            '      test: [\'CMD\', \'curl\', \'-f\', \'http://localhost:5601\']\n' +
+            '      interval: 20s\n' +
+            '      timeout: 5s\n' +
+            '      retries: 10\n' +
+            '    depends_on:\n' +
+            '      - elasticsearch';
         dependsKibana = '- kibana';
     }
 
@@ -101,7 +132,7 @@ function preencherCodigoGerado(){
         configMongo = 'mongo0:\n' +
             '    hostname: mongo0\n' +
             '    networks:\n' +
-            '      - backend\n' +
+            '      - ' + nomeRedeBackend + '\n' +
             '    container_name: mongo0\n' +
             '    image: mongo\n' +
             '    ports:\n' +
@@ -115,19 +146,33 @@ function preencherCodigoGerado(){
 
     let configMongoExpress = '';
     if(mongoExpress){
+        configMongoExpress = 'mongo-express:\n' +
+            '    image: mongo-express\n' +
+            '    restart: always\n' +
+            '    depends_on:\n' +
+            '      - mongo0\n' +
+            '    ports:\n' +
+            '      - 8081:8081\n' +
+            '    environment:\n' +
+            '      - ME_CONFIG_MONGODB_SERVER=mongo0\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend;
     }
 
     let configKafka = '';
     if(kafka){
-        configKafka = '- kafka';
+        configKafka = '';
+        dependsKafka = '- kafka';
     }
 
+    let configKafkaDrop = '';
     if(kafkadrop){
-
+        configKafkaDrop = '';
     }
 
     let configMailDev = '';
     if(maildev){
+        configMailDev = '';
         dependsMailDev = '- maildev';
     }
 
@@ -163,6 +208,7 @@ services:
   ${configElastic}
   ${configKibana}
   ${configKafka}
+  ${configKafkaDrop}
   ${configMailDev}
   ${configSpringBoot}
 networks:
