@@ -48,8 +48,6 @@ function preencherCodigoGerado(){
     // elastic
     let elastic762 = document.getElementById('elastic762').checked;
     let elastic684 = document.getElementById('elastic684').checked;
-    console.log(elastic762);
-    console.log(elastic684);
 
     // kibana
     let kibana762 = document.getElementById('kibana762').checked;
@@ -73,7 +71,25 @@ function preencherCodigoGerado(){
     let nomeBancoMongo = 'tdc2020';
 
     // gerar texto do docker-compose.yml
+    let textoDockerComposeYaml = '';
 
+    if(elastic762){
+
+    }
+
+    if(mongo44){
+
+    }
+
+    if(mongoExpress){
+
+    }
+
+
+
+    editor.setValue(textoDockerComposeYaml);
+
+    // =======================================================
     // gerar texto do Dockerfile para spring boot
     var optFramework = frameworkSelecionado.options[frameworkSelecionado.selectedIndex];
 
@@ -92,6 +108,7 @@ ENTRYPOINT ["java","-jar","app.jar"]`;
 
     editor2.setValue(textoDockerFileBackend);
 
+    // ====================================================
     // gerar texto do application.properties
     let textoProperties = '';
 

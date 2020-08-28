@@ -11,12 +11,35 @@
 <h1> Selecione as dependências que o seu projeto irá usar e clique em "GERAR"</h1>
 
 <form method="post">
-<fieldset id="fldDockerCompose">
+    <fieldset id="avisos">
+        <legend>
+            Avisos e disclaimer:
+        </legend>
+
+        <ul>
+            <li>Linkedin do criador original da ferramenta: (Marcelo Bezerra)
+                <a href="https://www.linkedin.com/in/bovino/" target="_blank">
+                https://www.linkedin.com/in/bovino/
+                </a>
+            </li>
+            <li>Canal YouTube do criador original da ferramenta:
+                <a href="https://www.youtube.com/user/bovino2010" target="_blank">
+                    https://www.youtube.com/user/bovino2010
+                </a>
+            </li>
+            <li> As configs geradas são úteis em ambiente de desenvolvimento. Não as utilize para setups de produção! </li>
+            <li> Sim, eu sei que o código interno do gerador não está bonito =D </li>
+            <li> Fazer a geração das configurações com código server-side? Quem sabe um dia.... </li>
+            <li> Melhorar o layout? Seria bom... ajuda nóis ae!!!</li>
+            <li> Até o momento só testei com o Chrome....</li>
+        </ul>
+</fieldset>
+
+    <fieldset id="fldDockerCompose" style="float: left; width: 280px;">
 <legend>
 Selecione a versao do Docker compose
 </legend>
 
-<p>
   <select name="dockerComposeVersao" id="dockerComposeVersao">
       <option>3.8</option>
       <option>3.7</option>
@@ -34,47 +57,50 @@ Selecione a versao do Docker compose
       <option>2</option>
       <option>1</option>
   </select>
-</p>
 </fieldset>
 
-<fieldset id="fldBackend">
-  <legend>Selecione um framework e versão para o seu backend:</legend>
+<fieldset id="fldBackend" style="float: left; width: 420px;">
+  <legend>Selecione um framework e versão JDK para o seu backend:</legend>
 
   <select name="framework" id="framework">
     <option value="1">
-    Spring Boot + Java 11 (Open JDK, Alpine)
+    Spring Boot JAR + Java 11 (Open JDK, Alpine)
     </option>
     <option value="2">
-    Spring Boot + Java 8 (Open JDK, Alpine)
+    Spring Boot JAR + Java 8 (Open JDK, Alpine)
     </option>
     <option value="3">
-    Spring Boot + Java 14 (Open JDK, Alpine)
+    Spring Boot JAR + Java 14 (Open JDK, Alpine)
     </option>
   </select>
-
 </fieldset>
+
+<p> &nbsp; </p>
+<p> &nbsp; </p>
 
 <fieldset id="fldServicos">
     <legend>Selecione os serviços dos quais sua aplicação depende</legend>
-    <p> <input type="checkbox" name="chkServicos" id="nginx"/> (TODO) NGINX para deploy front-end </p>
     <p> <input type="checkbox" name="chkServicos" id="elastic762"/> Elastic Search 7.6.2 </p>
-    <p> <input type="checkbox" name="chkServicos" id="elastic684"/> (TODO) Elastic Search 6.8.4 </p>
     <p> <input type="checkbox" name="chkServicos" id="kibana762"/> Kibana 7.6.2 WebUI </p>
+    <p> <input type="checkbox" name="chkServicos" id="mongo44"/> MongoDB (latest) </p>
+    <p> <input type="checkbox" name="chkServicos" id="mongoExpress"/> MongoExpress WebUI </p>
+    <p> <input type="checkbox" name="chkServicos" id="zookeeper"/> Zookeeper (versao latest) </p>
+    <p> <input type="checkbox" name="chkServicos" id="kafka"/> Bitnami Kafka (versao latest) </p>
+    <p> <input type="checkbox" name="chkServicos" id="kafkadrop"/> KafDrop Web UI para Kafka (versao latest) </p>
+    <p> <input type="checkbox" name="chkServicos" id="maildev"/> Servidor fake SMTP + WebUi MailDev (versao latest) </p>
+
+    <p> <br/> <b>Os itens abaixo já estão no roadmap e serão feitos "em breve"</b></p>
+    <p> <input type="checkbox" name="chkServicos" id="nginx"/> (TODO) NGINX para deploy front-end </p>
+    <p> <input type="checkbox" name="chkServicos" id="elastic684"/> (TODO) Elastic Search 6.8.4 </p>
     <p> <input type="checkbox" name="chkServicos" id="kibana684"/> (TODO) Kibana 6.8.4 WebUI </p>
     <p> <input type="checkbox" name="chkServicos" id="mongo36"/> (TODO) MongoDB 3.6</p>
     <p> <input type="checkbox" name="chkServicos" id="mongo36ReplicaSet"/> (TODO) MongoDB 3.6 + REPLICA SET (2 nodes)</p>
     <p> <input type="checkbox" name="chkServicos" id="mongo40"/> (TODO) MongoDB 4.0 </p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo44"/> MongoDB (latest) </p>
     <p> <input type="checkbox" name="chkServicos" id="mongo44ReplicaSet"/> (TODO) MongoDB 4.4 + REPLICA SET (2 nodes)</p>
-    <p> <input type="checkbox" name="chkServicos" id="mongoExpress"/> MongoExpress WebUI </p>
     <p> <input type="checkbox" name="chkServicos" id="mysql8"/> (TODO) MySQL 8.0 </p>
     <p> <input type="checkbox" name="chkServicos" id="postgres13"/> (TODO) Postgres 13 </p>
     <p> <input type="checkbox" name="chkServicos" id="postgres96"/> (TODO) Postgres 9.6 </p>
     <p> <input type="checkbox" name="chkServicos" id="postgres9"/> (TODO) Postgres 9 </p>
-    <p> <input type="checkbox" name="chkServicos" id="zookeeper"/> Zookeeper (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="kafka"/> Bitnami Kafka (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="kafkadrop"/> KafDrop Web UI (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="maildev"/> Servidor fake SMTP + WebUi MailDev (versao latest) </p>
     <p> <input type="checkbox" name="chkServicos" id="rabbitmq"/> (TODO) Bitnami RabbitMQ (versao latest) </p>
 </fieldset>
 
