@@ -56,6 +56,9 @@ function preencherCodigoGerado(){
     // mongo express
     let mongoExpress = document.getElementById('mongoExpress').checked;
 
+    // zookeeper
+    let zookeeper = document.getElementById('zookeeper').checked;
+
     // kafka
     let kafka = document.getElementById('kafka').checked;
     let kafkadrop = document.getElementById('kafkadrop').checked;
@@ -75,6 +78,7 @@ function preencherCodigoGerado(){
     let dependsMongo = '';
     let dependsElastic = '';
     let dependsKafka = '';
+    let dependsZookeeper = '';
     let dependsKibana = '';
     let dependsMailDev = '';
     let subConfigElastic = '';
@@ -159,9 +163,35 @@ function preencherCodigoGerado(){
             '      - ' + nomeRedeBackend;
     }
 
+    let configZooKeeper = '';
+    if(zookeeper){
+        configZooKeeper = 'zookeeper:\n' +
+            '    image: \'bitnami/zookeeper:latest\'\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend + '\n' +
+            '    ports:\n' +
+            '      - \'2181:2181\'\n' +
+            '    environment:\n' +
+            '      - ALLOW_ANONYMOUS_LOGIN=yes';
+        dependsZookeeper = '- zookeeper';
+    }
+
     let configKafka = '';
     if(kafka){
-        configKafka = '';
+        configKafka = 'kafka:\n' +
+            '    image: \'bitnami/kafka:latest\'\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend + '\n' +
+            '    ports:\n' +
+            '      - \'9092:9092\'\n' +
+            '    environment:\n' +
+            '      - KAFKA_BROKER_ID=1\n' +
+            '      - KAFKA_LISTENERS=PLAINTEXT://:9092\n' +
+            '      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092\n' +
+            '      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181\n' +
+            '      - ALLOW_PLAINTEXT_LISTENER=yes\n' +
+            '    depends_on:\n' +
+            '      - zookeeper';
         dependsKafka = '- kafka';
     }
 
@@ -172,7 +202,13 @@ function preencherCodigoGerado(){
 
     let configMailDev = '';
     if(maildev){
-        configMailDev = '';
+        configMailDev = 'maildev:\n' +
+            '    image: maildev/maildev\n' +
+            '    ports:\n' +
+            '      - 1080:80\n' +
+            '      - 25:25\n' +
+            '    networks:\n' +
+            '      - ' + nomeRedeBackend;
         dependsMailDev = '- maildev';
     }
 
@@ -207,6 +243,7 @@ services:
   ${configMongoExpress}
   ${configElastic}
   ${configKibana}
+  ${configZooKeeper}
   ${configKafka}
   ${configKafkaDrop}
   ${configMailDev}
