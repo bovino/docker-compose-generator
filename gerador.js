@@ -71,21 +71,32 @@ function preencherCodigoGerado(){
     let nomeBancoMongo = 'tdc2020';
 
     // gerar texto do docker-compose.yml
-    let textoDockerComposeYaml = '';
-
+    let configElastic = '';
     if(elastic762){
-
     }
 
+    let configKibana = '';
+    if(kibana762){
+    }
+
+    let configMongo = '';
     if(mongo44){
-
     }
 
+    let configMongoExpress = '';
     if(mongoExpress){
-
     }
 
-
+    let textoDockerComposeYaml = `
+version: '3'
+services:
+  ${configMongo}
+  ${configMongoExpress}
+  ${configElastic}
+  ${configKibana}
+  ${configSpringBoot}
+networks:
+  ${nomeRedeBackend}:`;
 
     editor.setValue(textoDockerComposeYaml);
 
