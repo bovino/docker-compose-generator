@@ -87,8 +87,8 @@ function preencherCodigoGerado(){
     if(elastic762){
         dependsElastic = '- elasticsearch';
         subConfigElastic = '- SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200\n' +
-            '    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster\n' +
-            '    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300';
+            '      - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster\n' +
+            '      - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300';
     }
 
     let configKibana = '';
@@ -98,9 +98,19 @@ function preencherCodigoGerado(){
 
     let configMongo = '';
     if(mongo44){
+        configMongo = 'mongo0:\n' +
+            '    hostname: mongo0\n' +
+            '    networks:\n' +
+            '      - backend\n' +
+            '    container_name: mongo0\n' +
+            '    image: mongo\n' +
+            '    ports:\n' +
+            '      - 27017:27017\n' +
+            '    restart: on-failure';
+
         dependsMongo = '- mongo0';
         subConfigMongo = '- SPRING_DATA_MONGODB_DATABASE=' + nomeBancoMongo + '\n' +
-            '    - SPRING_DATA_MONGODB_URI=mongodb://mongo0:27017';
+            '      - SPRING_DATA_MONGODB_URI=mongodb://mongo0:27017';
     }
 
     let configMongoExpress = '';
@@ -121,24 +131,24 @@ function preencherCodigoGerado(){
         dependsMailDev = '- maildev';
     }
 
-    let configSpringBoot = `    
-demo-service:
-  image: sample-container
-  networks:
-    - ${nomeRedeBackend}
-  build: .
-  restart: on-failure
-  ports:
-    - 8080:8080
-  environment:
-    ${subConfigElastic}
-    ${subConfigMongo}
-  depends_on:
-    ${dependsMongo}
-    ${dependsElastic}
-    ${dependsKafka}
-    ${dependsKibana}
-    ${dependsMailDev}`;
+    let configSpringBoot = ` 
+  demo-service:
+    image: sample-container
+    networks:
+      - ${nomeRedeBackend}
+    build: .
+    restart: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      ${subConfigElastic}
+      ${subConfigMongo}
+    depends_on:
+      ${dependsMongo}
+      ${dependsElastic}
+      ${dependsKafka}
+      ${dependsKibana}
+      ${dependsMailDev}`;
 
     if(optFramework.value == 0){
         configSpringBoot = '';
