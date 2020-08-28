@@ -58,6 +58,7 @@ function preencherCodigoGerado(){
 
     // kafka
     let kafka = document.getElementById('kafka').checked;
+    let kafkadrop = document.getElementById('kafkadrop').checked;
     let nomeTopicoPadrao = 'new_user_topic';
     let consumerGroupPadrao = 'tdcConsumerGroup';
 
@@ -71,23 +72,53 @@ function preencherCodigoGerado(){
     let nomeBancoMongo = 'tdc2020';
 
     // gerar texto do docker-compose.yml
+    let dependsMongo = '';
+    let dependsElastic = '';
+    let dependsKafka = '';
+    let dependsKibana = '';
+    let dependsMailDev = '';
+    let subConfigElastic = '';
+    let subConfigMongo = '';
+
     var optFramework = frameworkSelecionado.options[frameworkSelecionado.selectedIndex];
     let nomeRedeBackend = 'backend';
 
     let configElastic = '';
     if(elastic762){
+        dependsElastic = '- elasticsearch';
+        subConfigElastic = '- SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200\n' +
+            '    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster\n' +
+            '    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300';
     }
 
     let configKibana = '';
     if(kibana762){
+        dependsKibana = '- kibana';
     }
 
     let configMongo = '';
     if(mongo44){
+        dependsMongo = '- mongo0';
+        subConfigMongo = '- SPRING_DATA_MONGODB_DATABASE=' + nomeBancoMongo + '\n' +
+            '    - SPRING_DATA_MONGODB_URI=mongodb://mongo0:27017';
     }
 
     let configMongoExpress = '';
     if(mongoExpress){
+    }
+
+    let configKafka = '';
+    if(kafka){
+        configKafka = '- kafka';
+    }
+
+    if(kafkadrop){
+
+    }
+
+    let configMailDev = '';
+    if(maildev){
+        dependsMailDev = '- maildev';
     }
 
     let configSpringBoot = `    
@@ -100,15 +131,14 @@ demo-service:
   ports:
     - 8080:8080
   environment:
-    - SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200
-    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster
-    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
-    - SPRING_DATA_MONGODB_DATABASE=tdc2020
-    - SPRING_DATA_MONGODB_URI=mongodb://mongo0:27017
+    ${subConfigElastic}
+    ${subConfigMongo}
   depends_on:
-    - mongo0
-    - elasticsearch
-    - kibana`;
+    ${dependsMongo}
+    ${dependsElastic}
+    ${dependsKafka}
+    ${dependsKibana}
+    ${dependsMailDev}`;
 
     if(optFramework.value == 0){
         configSpringBoot = '';
@@ -122,6 +152,8 @@ services:
   ${configMongoExpress}
   ${configElastic}
   ${configKibana}
+  ${configKafka}
+  ${configMailDev}
   ${configSpringBoot}
 networks:
   ${nomeRedeBackend}:`;
