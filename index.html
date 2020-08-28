@@ -1,144 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
     <script src="gerador.js" type="text/javascript"></script>
-    <script src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js" charset="utf-8" crossorigin="anonymous" integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU=" ></script>
+    <script
+      src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js"
+      charset="utf-8"
+      crossorigin="anonymous"
+      integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU="
+    ></script>
     <title>Gerador de arquivos docker-compose.yml</title>
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.0/css/bulma.min.css"
+      integrity="sha512-ADrqa2PY1TZtb/MoLZIZu/Z/LlPaWQeDMBV73EMwjGam43/JJ5fqW38Rq8LJOVGCDfrJeOMS3Q/wRUVzW5DkjQ=="
+      crossorigin="anonymous"
+    />
+    <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+  </head>
+  <body>
+    <section class="hero is-primary">
+      <div class="hero-body">
+        <div class="container">
+          <h1 class="title">Gerador de arquivos docker-compose.yml</h1>
+          <h2 class="subtitle">
+            Desenvolvido por <b>Bovino</b>, também conhecido como Marcelo
+            Bezerra
+          </h2>
+          <div class="subtitle">
+            <a href="https://www.linkedin.com/in/bovino/" target="_blank">
+              <i class="fab fa-linkedin"></i>
+              /bovino
+            </a>
+            <br />
+            <a href="https://www.youtube.com/user/bovino2010" target="_blank">
+              <i class="fab fa-youtube"></i>
+              /bovino2010
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<h1> Selecione as dependências que o seu projeto irá usar e clique em "GERAR"</h1>
+    <section class="section">
+      <div class="container">
+        <div class="message is-warning">
+          <h3 class="message-header">Avisos e disclaimer:</h3>
+          <div class="message-body">
+            <div class="content">
+              <ol>
+                <li>
+                  As configs geradas são úteis em ambiente de desenvolvimento.
+                  <strong class="has-text-danger">
+                    Não as utilize para setups de produção!
+                  </strong>
+                </li>
+                <li>
+                  Sim, eu sei que o código interno do gerador não está bonito =D
+                </li>
+                <li>
+                  Fazer a geração das configurações com código server-side? Quem
+                  sabe um dia....
+                </li>
+                <li>Melhorar o layout? Seria bom... ajuda nóis ae!!!</li>
+                <li>Até o momento só testei com o Chrome....</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<form method="post">
-    <fieldset id="avisos">
-        <legend>
-            Avisos e disclaimer:
-        </legend>
+    <div id="gerador">
+      <section class="container">
+        <h1 class="title is-mobile has-text-centered has-padding">
+          Selecione as dependências que o seu projeto irá usar e clique em
+          "GERAR"
+        </h1>
+      </section>
 
-        <ul>
-            <li>Linkedin do criador original da ferramenta: (Marcelo Bezerra)
-                <a href="https://www.linkedin.com/in/bovino/" target="_blank">
-                https://www.linkedin.com/in/bovino/
-                </a>
-            </li>
-            <li>Canal YouTube do criador original da ferramenta:
-                <a href="https://www.youtube.com/user/bovino2010" target="_blank">
-                    https://www.youtube.com/user/bovino2010
-                </a>
-            </li>
-            <li> As configs geradas são úteis em ambiente de desenvolvimento. Não as utilize para setups de produção! </li>
-            <li> Sim, eu sei que o código interno do gerador não está bonito =D </li>
-            <li> Fazer a geração das configurações com código server-side? Quem sabe um dia.... </li>
-            <li> Melhorar o layout? Seria bom... ajuda nóis ae!!!</li>
-            <li> Até o momento só testei com o Chrome....</li>
-        </ul>
-</fieldset>
+      <form class="form" method="post">
+        <section class="section">
+          <div class="container mb-5">
+            <div class="columns content">
+              <div class="column">
+                <div id="fldDockerCompose" class="box">
+                  <h4>Selecione a versao do Docker compose</h4>
 
-    <fieldset id="fldDockerCompose" style="float: left; width: 280px;">
-<legend>
-Selecione a versao do Docker compose
-</legend>
+                  <div class="select is-fullwidth">
+                    <select name="dockerComposeVersao" id="dockerComposeVersao">
+                      <option>3.8</option>
+                      <option>3.7</option>
+                      <option>3.6</option>
+                      <option>3.5</option>
+                      <option>3.4</option>
+                      <option>3.3</option>
+                      <option>3.2</option>
+                      <option>3.1</option>
+                      <option>3</option>
+                      <option>2.4</option>
+                      <option>2.3</option>
+                      <option>2.2</option>
+                      <option>2.1</option>
+                      <option>2</option>
+                      <option>1</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
 
-  <select name="dockerComposeVersao" id="dockerComposeVersao">
-      <option>3.8</option>
-      <option>3.7</option>
-      <option>3.6</option>
-      <option>3.5</option>
-      <option>3.4</option>
-      <option>3.3</option>
-      <option>3.2</option>
-      <option>3.1</option>
-      <option>3</option>
-      <option>2.4</option>
-      <option>2.3</option>
-      <option>2.2</option>
-      <option>2.1</option>
-      <option>2</option>
-      <option>1</option>
-  </select>
-</fieldset>
+              <div class="column">
+                <div id="fldBackend" class="box">
+                  <h4>
+                    Selecione um framework e versão JDK para o seu backend:
+                  </h4>
+                  <div class="select is-fullwidth">
+                    <select name="framework" id="framework">
+                      <option value="1">
+                        Spring Boot JAR + Java 11 (Open JDK, Alpine)
+                      </option>
+                      <option value="2">
+                        Spring Boot JAR + Java 8 (Open JDK, Alpine)
+                      </option>
+                      <option value="3">
+                        Spring Boot JAR + Java 14 (Open JDK, Alpine)
+                      </option>
+                      <option value="0">
+                        Nenhum (não irá adicionar configuração para serviço
+                        SpringBoot)
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<fieldset id="fldBackend" style="float: left; width: 420px;">
-  <legend>Selecione um framework e versão JDK para o seu backend:</legend>
-  <select name="framework" id="framework">
-      <option value="1">
-    Spring Boot JAR + Java 11 (Open JDK, Alpine)
-    </option>
-    <option value="2">
-    Spring Boot JAR + Java 8 (Open JDK, Alpine)
-    </option>
-    <option value="3">
-    Spring Boot JAR + Java 14 (Open JDK, Alpine)
-    </option>
-    <option value="0">
-    Nenhum (não irá adicionar configuração para serviço SpringBoot)
-    </option>
-  </select>
-</fieldset>
+          <div id="fldServicos">
+            <div class="container content">
+              <div class="box">
+                <h4>Selecione os serviços dos quais sua aplicação depende</h4>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="elastic762" />
+                  Elastic Search 7.6.2
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="kibana762" />
+                  Kibana 7.6.2 WebUI
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="mongo44" />
+                  MongoDB <span class="has-text-success">(latest)</span>
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="mongoExpress" />
+                  MongoExpress WebUI
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="zookeeper" />
+                  Zookeeper
+                  <span class="has-text-success">(latest)</span>
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="kafka" />
+                  Bitnami Kafka
+                  <span class="has-text-success">(latest)</span>
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="kafkadrop" />
+                  KafDrop Web UI para Kafka
+                  <span class="has-text-success">(latest)</span>
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="maildev" />
+                  Servidor fake SMTP + WebUi MailDev
+                  <span class="has-text-success">(latest)</span>
+                </p>
+              </div>
 
-<p> &nbsp; </p>
-<p> &nbsp; </p>
+              <div class="box">
+                <h4>
+                  Os itens abaixo já estão no roadmap e serão feitos "em breve"
+                </h4>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="nginx" /> (TODO)
+                  Bitname SonarQube (latest)
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="nginx" /> (TODO)
+                  NGINX para deploy front-end
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="elastic684" />
+                  (TODO) Elastic Search 6.8.4
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="kibana684" />
+                  (TODO) Kibana 6.8.4 WebUI
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="mongo36" />
+                  (TODO) MongoDB 3.6
+                </p>
+                <p>
+                  <input
+                    type="checkbox"
+                    name="chkServicos"
+                    id="mongo36ReplicaSet"
+                  />
+                  (TODO) MongoDB 3.6 + REPLICA SET (2 nodes)
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="mongo40" />
+                  (TODO) MongoDB 4.0
+                </p>
+                <p>
+                  <input
+                    type="checkbox"
+                    name="chkServicos"
+                    id="mongo44ReplicaSet"
+                  />
+                  (TODO) MongoDB 4.4 + REPLICA SET (2 nodes)
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="mysql8" />
+                  (TODO) MySQL 8.0
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="sqlserverexp" />
+                  (TODO) MS SQL Server Express
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="pphmyadmin" />
+                  (TODO) PhpMyAdmin
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="postgres13" />
+                  (TODO) Postgres 13
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="postgres96" />
+                  (TODO) Postgres 9.6
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="postgres9" />
+                  (TODO) Postgres 9
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="rabbitmq" />
+                  (TODO) Bitnami RabbitMQ (versao latest)
+                </p>
+                <p>
+                  <input type="checkbox" name="chkServicos" id="neo4j" /> (TODO)
+                  Bitname Neo4J
+                </p>
+              </div>
+            </div>
+          </div>
 
-<fieldset id="fldServicos">
-    <legend>Selecione os serviços dos quais sua aplicação depende</legend>
-    <p> <input type="checkbox" name="chkServicos" id="elastic762"/> Elastic Search 7.6.2 </p>
-    <p> <input type="checkbox" name="chkServicos" id="kibana762"/> Kibana 7.6.2 WebUI </p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo44"/> MongoDB (latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="mongoExpress"/> MongoExpress WebUI </p>
-    <p> <input type="checkbox" name="chkServicos" id="zookeeper"/> Zookeeper (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="kafka"/> Bitnami Kafka (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="kafkadrop"/> KafDrop Web UI para Kafka (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="maildev"/> Servidor fake SMTP + WebUi MailDev (versao latest) </p>
-
-    <p> <br/> <b>Os itens abaixo já estão no roadmap e serão feitos "em breve"</b></p>
-    <p> <input type="checkbox" name="chkServicos" id="nginx"/> (TODO) Bitname SonarQube (latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="nginx"/> (TODO) NGINX para deploy front-end </p>
-    <p> <input type="checkbox" name="chkServicos" id="elastic684"/> (TODO) Elastic Search 6.8.4 </p>
-    <p> <input type="checkbox" name="chkServicos" id="kibana684"/> (TODO) Kibana 6.8.4 WebUI </p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo36"/> (TODO) MongoDB 3.6</p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo36ReplicaSet"/> (TODO) MongoDB 3.6 + REPLICA SET (2 nodes)</p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo40"/> (TODO) MongoDB 4.0 </p>
-    <p> <input type="checkbox" name="chkServicos" id="mongo44ReplicaSet"/> (TODO) MongoDB 4.4 + REPLICA SET (2 nodes)</p>
-    <p> <input type="checkbox" name="chkServicos" id="mysql8"/> (TODO) MySQL 8.0 </p>
-    <p> <input type="checkbox" name="chkServicos" id="sqlserverexp"/> (TODO) MS SQL Server Express </p>
-    <p> <input type="checkbox" name="chkServicos" id="pphmyadmin"/> (TODO) PhpMyAdmin </p>
-    <p> <input type="checkbox" name="chkServicos" id="postgres13"/> (TODO) Postgres 13 </p>
-    <p> <input type="checkbox" name="chkServicos" id="postgres96"/> (TODO) Postgres 9.6 </p>
-    <p> <input type="checkbox" name="chkServicos" id="postgres9"/> (TODO) Postgres 9 </p>
-    <p> <input type="checkbox" name="chkServicos" id="rabbitmq"/> (TODO) Bitnami RabbitMQ (versao latest) </p>
-    <p> <input type="checkbox" name="chkServicos" id="neo4j"/> (TODO) Bitname Neo4J </p>
-</fieldset>
-
-<p>
-<input type="button" id="btGerar" onclick="gerar()" value="GERAR A BAGAÇA" />
-</p>
-</form>
-
-<fieldset id="fldResultado1" style="visibility: hidden;">
-<legend>docker-compose.yml</legend>
-<div id="editor" style="position: relative; width: 500px; height: 400px;">
-</div>
-</fieldset>
-
-<fieldset id="fldResultado2" style="visibility: hidden;">
-<legend>Dockerfile para o SpringBoot</legend>
-<div id="editor2" style="position: relative; width: 500px; height: 400px;">
-</div>
-</fieldset>
-
-<fieldset id="fldResultado3" style="visibility: hidden;">
-    <legend>application.properties para o SpringBoot</legend>
-    <div id="editor3" style="position: relative; width: 500px; height: 400px;">
+          <div class="container mt-6">
+            <div class="columns is-centered">
+              <div class="column is-half">
+                <button
+                  type="button"
+                  id="btGerar"
+                  class="button is-success is-fullwidth is-large"
+                  onclick="gerar()"
+                >
+                  GERAR A BAGAÇA
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </form>
     </div>
-    <p>
-      <input type="button" id="btGerar" onclick="fechar()" value="FECHAR A BAGAÇA" />
-    </p>
-</fieldset>
-<script>
-var editor = ace.edit("editor"); // docker-compose
-var editor2 = ace.edit("editor2"); // dockerfile backend
-var editor3 = ace.edit("editor3"); // application properties backend
-</script>
-</body>
+
+    <div class="container" id="resultado" style="display: none">
+      <h1 class="title has-text-centered">Tá na mão!</h1>
+      <div class="columns">
+        <div class="column">
+          <fieldset id="fldResultado1">
+            <legend>docker-compose.yml</legend>
+            <div
+              id="editor"
+              style="position: relative; width: 100%; height: 400px"
+            ></div>
+          </fieldset>
+        </div>
+
+        <div class="column">
+          <fieldset id="fldResultado2">
+            <legend>Dockerfile para o SpringBoot</legend>
+            <div
+              id="editor2"
+              style="position: relative; width: 100%; height: 400px"
+            ></div>
+          </fieldset>
+        </div>
+
+        <div class="column">
+          <fieldset id="fldResultado3">
+            <legend>application.properties para o SpringBoot</legend>
+            <div
+              id="editor3"
+              style="position: relative; width: 100%; height: 400px"
+            ></div>
+          </fieldset>
+        </div>
+      </div>
+      <section class="section">
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <button
+              type="button"
+              id="btGerar"
+              class="button is-warning is-large is-fullwidth"
+              onclick="fechar();"
+            >
+              GERAR OUTRA BAGAÇA
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      var editor = ace.edit("editor"); // docker-compose
+      var editor2 = ace.edit("editor2"); // dockerfile backend
+      var editor3 = ace.edit("editor3"); // application properties backend
+    </script>
+  </body>
 </html>
