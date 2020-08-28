@@ -61,9 +61,8 @@ Selecione a versao do Docker compose
 
 <fieldset id="fldBackend" style="float: left; width: 420px;">
   <legend>Selecione um framework e versão JDK para o seu backend:</legend>
-
   <select name="framework" id="framework">
-    <option value="1">
+      <option value="1">
     Spring Boot JAR + Java 11 (Open JDK, Alpine)
     </option>
     <option value="2">
@@ -71,6 +70,9 @@ Selecione a versao do Docker compose
     </option>
     <option value="3">
     Spring Boot JAR + Java 14 (Open JDK, Alpine)
+    </option>
+    <option value="0">
+    Nenhum (não irá adicionar configuração para serviço SpringBoot)
     </option>
   </select>
 </fieldset>

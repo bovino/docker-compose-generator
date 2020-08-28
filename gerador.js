@@ -71,6 +71,27 @@ function preencherCodigoGerado(){
     let nomeBancoMongo = 'tdc2020';
 
     // gerar texto do docker-compose.yml
+    let nomeRedeBackend = 'backend';
+    let configSpringBoot = `    
+demo-service:
+  image: sample-container
+  networks:
+    - ${nomeRedeBackend}
+  build: .
+  restart: on-failure
+  ports:
+    - 8080:8080
+  environment:
+    - SPRING_ELASTICSEARCH_REST_URIS=http://elasticsearch:9200
+    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NAME=docker-cluster
+    - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+    - SPRING_DATA_MONGODB_DATABASE=tdc2020
+    - SPRING_DATA_MONGODB_URI=mongodb://mongo0:27017
+  depends_on:
+    - mongo0
+    - elasticsearch
+    - kibana`;
+
     let configElastic = '';
     if(elastic762){
     }
@@ -87,8 +108,9 @@ function preencherCodigoGerado(){
     if(mongoExpress){
     }
 
+    var optDockerComposeVersao = dockerComposeVersao.options[dockerComposeVersao.selectedIndex].value;
     let textoDockerComposeYaml = `
-version: '3'
+version: '${optDockerComposeVersao}'
 services:
   ${configMongo}
   ${configMongoExpress}
