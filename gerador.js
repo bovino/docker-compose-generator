@@ -42,6 +42,9 @@ function preencherCodigoGerado() {
   let dockerComposeVersao = document.getElementById("dockerComposeVersao");
   let frameworkSelecionado = document.getElementById("framework");
 
+  //redis
+  let redis = document.getElementById("redis").checked;
+
   // elastic
   let elastic762 = document.getElementById("elastic762").checked;
   let elastic684 = document.getElementById("elastic684").checked;
@@ -72,6 +75,7 @@ function preencherCodigoGerado() {
   let nomeBancoMongo = "tdc2020";
 
   // gerar texto do docker-compose.yml
+  let dependsRedis = "";
   let dependsMongo = "";
   let dependsElastic = "";
   let dependsKafka = "";
@@ -233,6 +237,23 @@ function preencherCodigoGerado() {
     dependsMailDev = "- maildev";
   }
 
+  let configRedis = "";
+  if (redis) {
+    configRedis =
+        "redis:\n" +
+        "    restart: on-failure\n" +
+        "    image: 'bitnami/redis:latest'\n" +
+        "    networks:\n" +
+        "      - " +
+        nomeRedeBackend +
+        "\n" +
+        "    ports:\n" +
+        "      - 6379:6379\n" +
+        "    environment:\n" +
+        "      - ALLOW_EMPTY_PASSWORD=yes";
+    dependsRedis = "- redis";
+  }
+
   let configSpringBoot = ` 
   demo-service:
     image: sample-container
@@ -246,10 +267,12 @@ function preencherCodigoGerado() {
       ${subConfigElastic}
       ${subConfigMongo}
     depends_on:
+      ${dependsRedis}
       ${dependsMongo}
       ${dependsElastic}
       ${dependsKafka}
       ${dependsKibana}
+      ${dependsRedis}
       ${dependsMailDev}`;
 
   if (optFramework.value == 0) {
@@ -261,6 +284,7 @@ function preencherCodigoGerado() {
   let textoDockerComposeYaml = `
 version: '${optDockerComposeVersao}'
 services:
+  ${configRedis}
   ${configMongo}
   ${configMongoExpress}
   ${configElastic}
@@ -286,9 +310,14 @@ networks:
     jdkSelecionada = "adoptopenjdk/openjdk14:alpine-jre";
   }
 
+  const JAR_FILE = '${JAR_FILE}';
+
   let textoDockerFileBackend = `FROM ${jdkSelecionada}
-ADD build/libs/sample-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","app.jar"]`;
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG JAR_FILE=build/libs/sample-0.0.1-SNAPSHOT.jar app.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]`;
 
   if (optFramework.value == 0) {
     textoDockerFileBackend = "";
